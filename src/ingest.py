@@ -20,6 +20,7 @@ def download_audio(url: str) -> Path:
         "format": "bestaudio[ext=m4a]/bestaudio",
         "outtmpl": str(RAW_DIR / "%(id)s.%(ext)s"),
         "quiet": True,
+        "noplaylist": True,  # nur das eine Video laden, auch wenn der Link eine Playlist enthält
     }
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=True)

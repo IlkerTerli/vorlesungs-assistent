@@ -28,17 +28,10 @@ def load_model() -> SentenceTransformer:
     return SentenceTransformer(MODEL_NAME)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Abschnitte in die Vektordatenbank schreiben")
-    parser.add_argument("chunks", help="Pfad zur Chunks-JSON in data/chunks")
-    args = parser.parse_args()
-
-    chunks = json.loads(Path(args.chunks).read_text(encoding="utf-8"))
-    print(f"{len(chunks)} Abschnitte geladen, lade Embedding-Modell ...")
-    model = load_model()
-
+def index_chunks(chunks: list[dict], model=None) -> int:
+    """Schreibt Abschnitte in die Vektordatenbank und gibt die Gesamtzahl zurück."""
+    model = model or load_model()
     # Das e5-Modell erwartet den Vorsatz "passage: " vor zu durchsuchenden Texten
-    start = time.time()
     embeddings = model.encode(
         ["passage: " + c["text"] for c in chunks],
         normalize_embeddings=True,
@@ -62,7 +55,18 @@ if __name__ == "__main__":
             for c in chunks
         ],
     )
+    return collection.count()
 
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Abschnitte in die Vektordatenbank schreiben")
+    parser.add_argument("chunks", help="Pfad zur Chunks-JSON in data/chunks")
+    args = parser.parse_args()
+
+    chunks = json.loads(Path(args.chunks).read_text(encoding="utf-8"))
+    print(f"{len(chunks)} Abschnitte geladen, lade Embedding-Modell ...")
+
+    start = time.time()
+    total = index_chunks(chunks)
     print(f"\nFertig in {time.time() - start:.1f} s")
-    print(f"Vektorlänge: {len(embeddings[0])} Zahlen pro Abschnitt")
-    print(f"Abschnitte in der Datenbank: {collection.count()}")
+    print(f"Abschnitte in der Datenbank: {total}")
