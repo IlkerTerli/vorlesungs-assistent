@@ -30,7 +30,7 @@ def download_audio(url: str) -> Path:
     meta = {
         "id": info.get("id"),
         "title": info.get("title"),
-        "url": url,
+        "url": info.get("webpage_url") or url,
         "duration_s": info.get("duration"),
         "license": info.get("license"),
     }
