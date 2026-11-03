@@ -43,8 +43,8 @@ def build_context(hits: list[dict]) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-def answer(question: str, k: int = 3) -> dict:
-    hits = search(question, k)
+def answer(question: str, k: int = 3, model=None) -> dict:
+    hits = search(question, k, model)
     prompt = f"Ausschnitte aus den Vorlesungen:\n\n{build_context(hits)}\n\nFrage: {question}"
 
     client = anthropic.Anthropic()  # nutzt automatisch ANTHROPIC_API_KEY
