@@ -3,7 +3,7 @@
 Fragen an Vorlesungsvideos – mit Antwort und Fundstelle direkt im Video.
 
 Projekt im Modul „KI in der Anwendung“, M.Sc. Wirtschaftsinformatik, Hochschule Worms.
-Projektteam: Akif, Burak, Ilker Terli
+Projektteam: Akif Güngör, Burak Kahraman, Ilker Terli
 
 ## Funktionsweise
 
